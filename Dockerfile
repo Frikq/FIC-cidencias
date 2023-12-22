@@ -1,5 +1,6 @@
 FROM php:8.0.11-fpm-alpine
 
+# Install system dependencies
 RUN apk --no-cache update && \
     apk --no-cache add \
         libzip-dev \
@@ -7,16 +8,21 @@ RUN apk --no-cache update && \
         libxml2-dev \
         unixodbc-dev \
         unzip \
+    && rm -rf /var/cache/apk/*
+
+# Install additional dependencies for PHP extensions
+RUN apk --no-cache add \
         freetype-dev \
         libjpeg-turbo-dev \
-        libpng-dev
+        libpng-dev \
+    && rm -rf /var/cache/apk/*
 
 # Enable necessary PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql mbstring zip pcntl soap
 
 # Install SQL Server PDO Driver
 RUN set -eux; \
-    apk add --no-cache --virtual .build-deps unixodbc-dev; \
+    apk --no-cache add --virtual .build-deps unixodbc-dev; \
     docker-php-ext-configure pdo_sqlsrv --with-pdo-sqlsrv=unixODBC,/usr; \
     docker-php-ext-install pdo_sqlsrv; \
     apk del .build-deps
