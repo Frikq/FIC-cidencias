@@ -1,17 +1,5 @@
 # Usa una imagen de PHP con Apache
-FROM php:8.0.30-apache
-
-# Instala las dependencias necesarias
-RUN apt-get update && \
-    apt-get install -y \
-        libzip-dev \
-        unzip \
-        libicu-dev \
-        freetds-dev \
-        && docker-php-ext-configure pdo_dblib --with-libdir=/lib/x86_64-linux-gnu \
-        && docker-php-ext-install pdo_dblib \
-        && docker-php-ext-install zip \
-        && docker-php-ext-install pdo pdo_mysql intl
+FROM php:8.0.30-apache-buster
 
 # Instala las extensiones necesarias para SQL Server
 RUN pecl install sqlsrv pdo_sqlsrv \
