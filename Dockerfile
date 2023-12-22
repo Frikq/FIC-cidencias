@@ -14,6 +14,9 @@ WORKDIR /var/www/html
 
 # Copia los archivos de la aplicación al contenedor
 COPY . .
+RUN rm -rf /app/vendor
+RUN rm -rf /app/composer.lock
+RUN composer install
 
 
 # Configura las variables de entorno para Laravel
