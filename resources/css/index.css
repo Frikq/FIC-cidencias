@@ -1,0 +1,59 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+#encabezado {
+    text-align: left;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+}
+
+#encabezado h1 {
+    margin-right: 10px;
+}
+
+#logo {
+    width: 50px;
+    height: auto;
+}
+
+
+.InicioSesion {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+    margin: 20px;
+}
+
+#cajaTexto {
+    margin-bottom: 20px;
+}
+
+#usuarioNombre,
+#usuarioContrasena {
+    display: block;
+    margin-bottom: 60px;
+}
+
+#inicioBotones {
+    margin-top: 20px;
+    display: inline-block;
+}
+
+#olvideContrasena {
+    color: blue;
+    text-align: left;
+    font-size: 18px;
+    font-style: italic;
+    margin-top: 30px;
+    padding: 10px;
+    /*border-radius: 20px;
+    background-color: #f0f0f0;*/
+}
+

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es-mx">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/ReporteIncidencia.css">
+    <script src="js/reporte.js"></script>
+    <title>Reportar incidencia</title>
+    <link rel="icon" href="img/logo.png" type="image/png">
+</head>
+<body>
+    <div class = "Reporte">
+        <div id="cajaTexto">
+            <label for="titulo">Titulo de incidencia:</label>
+            <input type="text" name="titulo"id="titulo" placeholder="Título de incidencia.">
+            
+            <label for="urgencia">Nivel de urgencia:</label>
+            <select name="urgencia" id="urgencia">
+                <option value="Baja">Baja</option>
+                <option value="Moderada">Moderada</option>
+                <option value="Urgente">Urgente</option>
+                <option value="Actual">Actual</option>
+            </select>
+
+            <label for="tipo">Tipo de incidencia:</label>
+            <select name="tipo" id="tipo">
+                <option value="Aparatos Electrónicos">Aparatos Electrónicos</option>
+                <option value="Cableado">Cableado</option>
+                <option value="Comportamiento">Comportamiento</option>
+                <option value="Iluminación">Iluminación</option>
+                <option value="Limpieza">Limpieza</option>
+                <option value="Mantenimiento">Mantenimiento</option>
+                <option value="Mobiliario">Mobiliario</option>
+                <option value="Sonido">Sonido</option>
+                <option value="Suministro Eléctrico">Suministro Eléctrico</option>
+                <option value="Ventilación">Ventilación</option>
+            </select>
+
+            <label for="lugar">Lugar de incidencia:</label>
+            <select name="lugar" id="lugar">
+                <option value="Áreas administrativas">Áreas administrativas</option>
+                <option value="Aula de capacitación A">Aula de capacitación A</option>
+                <option value="Aula de capacitación B">Aula de capacitación B</option>
+                <option value="Aulas">Aulas</option>
+                <option value="Auditorio">Auditorio</option>
+                <option value="Baños">Baños</option>
+                <option value="Centro de cómputo">Centro de cómputo</option>
+                <option value="Cubículo de maestros">Cubículo de maestros</option>
+                <option value="Dirección">Dirección</option>
+                <option value="Posgrado">Posgrado</option>
+                <option value="Sala audiovisual">Sala audiovisual</option>
+                <option value="Servicios profesionales y vinculación">Servicios profesionales y vinculación</option>
+                <option value="Taller de arquitectura">Taller de arquitectura</option>
+                <option value="Taller de redes">Taller de redes</option>
+            </select>
+            
+            <label for="descripcion">Descripción:</label>
+            <textarea maxlength="500" rows="10" cols="50" id="descripcion" placeholder="Descripción de incidencia."></textarea>
+            <div class = "botones">
+                <input type="submit" value="Eliminar" id="Eliminar"/>
+                <input type="submit" value="Enviar" id="enviar"/>
+            </div>
+            <h4 id="estatus">estatus: </h4>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+
+
+.cajaIncidencias {
+    width: 70%;
+    max-height: 60%; /* Añadido para establecer una altura máxima */
+    height: 60%;
+    margin-left: 15%;
+    margin-right: 15%;
+    border: 4px solid black;
+    background-color: antiquewhite;
+    overflow-y: auto; /* Añadido para permitir el scroll vertical */
+    box-sizing: border-box;
+}
+
+.incidencia {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid rgb(41, 41, 41);
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.urgencia {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid black;
+    background-clip: content-box;
+    background-color: red;
+    margin-left: auto;
+    margin-right: 15px;
+    box-sizing: border-box;
+}
+
+.urgencia-baja {
+    background-color: green;
+}
+
+.urgencia-moderada {
+    background-color: rgb(255, 136, 0);
+}
+
+.urgencia-urgente {
+    background-color: red;
+}
+
+.urgencia-actual {
+    background-color: rgb(75, 85, 224);
+}
+
+.urgencia-anterior {
+    background-color: rgb(43, 44, 63);
+}
+.botonesMenu {
+    margin-top: 10px; /* Añadido espacio superior */
+    align-self: flex-end; /* Alineado a la derecha */
+}
+
+#botonReporte {
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: 15px;
+    box-sizing: border-box;
+}
