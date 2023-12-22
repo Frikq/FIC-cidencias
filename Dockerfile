@@ -1,46 +1,44 @@
-FROM php:8.0.11-fpm-alpine
+# Usa una imagen de PHP con Apache
+FROM php:8.0.30-apache
 
-# Install system dependencies
-RUN apk --no-cache update && \
-    apk --no-cache add \
+# Instala las dependencias necesarias
+RUN apt-get update && \
+    apt-get install -y \
         libzip-dev \
-        libonig-dev \
-        libxml2-dev \
-        unixodbc-dev \
         unzip \
-    && rm -rf /var/cache/apk/*
+        libicu-dev \
+        freetds-dev \
+        && docker-php-ext-configure pdo_dblib --with-libdir=/lib/x86_64-linux-gnu \
+        && docker-php-ext-install pdo_dblib \
+        && docker-php-ext-install zip \
+        && docker-php-ext-install pdo pdo_mysql intl
 
-# Install additional dependencies for PHP extensions
-RUN apk --no-cache add \
-        freetype-dev \
-        libjpeg-turbo-dev \
-        libpng-dev \
-    && rm -rf /var/cache/apk/*
+# Instala las extensiones necesarias para SQL Server
+RUN pecl install sqlsrv pdo_sqlsrv \
+    && docker-php-ext-enable sqlsrv pdo_sqlsrv
 
-# Enable necessary PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql mbstring zip pcntl soap
+# Configura el servidor Apache
+RUN a2enmod rewrite
+COPY ./apache-config.conf /etc/apache2/sites-available/000-default.conf
 
-# Install SQL Server PDO Driver
-RUN set -eux; \
-    apk --no-cache add --virtual .build-deps unixodbc-dev; \
-    docker-php-ext-configure pdo_sqlsrv --with-pdo-sqlsrv=unixODBC,/usr; \
-    docker-php-ext-install pdo_sqlsrv; \
-    apk del .build-deps
-
-# Install Composer
+# Instala Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# Configura el directorio de trabajo
 WORKDIR /var/www/html
 
+# Copia los archivos de la aplicación al contenedor
 COPY . .
 
-# Install dependencies
+# Instala las dependencias de Composer
 RUN composer install
 
-# Set appropriate permissions
-RUN chown -R www-data:www-data storage bootstrap/cache
+# Configura las variables de entorno para Laravel
+COPY .env.example .env
+RUN php artisan key:generate
 
-# Expose port 9000 for php-fpm
-EXPOSE 9000
+# Expone el puerto 80
+EXPOSE 80
 
-CMD ["php-fpm"]
+# Inicia el servidor Apache
+CMD ["apache2-foreground"]
