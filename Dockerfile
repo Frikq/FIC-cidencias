@@ -18,7 +18,6 @@ COPY . .
 
 # Configura las variables de entorno para Laravel
 COPY .env.example .env
-RUN php artisan key:generate
 
 # Expone el puerto 80
 EXPOSE 80
