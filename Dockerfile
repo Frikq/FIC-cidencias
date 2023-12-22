@@ -15,8 +15,6 @@ WORKDIR /var/www/html
 # Copia los archivos de la aplicación al contenedor
 COPY . .
 
-# Instala las dependencias de Composer
-RUN composer install
 
 # Configura las variables de entorno para Laravel
 COPY .env.example .env
