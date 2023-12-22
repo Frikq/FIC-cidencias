@@ -59,16 +59,7 @@ Route::get('seleccionar', [BDController::class, 'seleccionar'])->name('seleccion
 Route::get('reporte/{incidencia}', [BDController::class, 'seleccionar']);
 
 
-//Route::get('reportar', [BDController::class, 'reportar'])->name('reportar');
 
 Route::post('iniciar-sesion', [AuthController::class, 'login'])->name('iniciar-sesion');
 
-//Route::post('registar', [AuthController::class, 'register'])->name('registar');
 Route::post('cerrar-sesion', [AuthController::class, 'logout'])->name('cerrar-sesion');
-/*Route::get('reporte/{variable}', [ReporteController::class, 'index']);
-
-Route::controller(MenuController::class)->group(function(){
-    Route::get('menu', [MenuController::class, 'index']);
-    Route::get('menu/{variable}', [MenuController::class, 'create']);
-    Route::get('menu/{dos}/{variables}', [MenuController::class, 'show']);
-});*/
