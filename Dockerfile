@@ -16,7 +16,6 @@ WORKDIR /var/www/html
 COPY . .
 RUN rm -rf /app/vendor
 RUN rm -rf /app/composer.lock
-RUN composer install
 
 
 # Configura las variables de entorno para Laravel
