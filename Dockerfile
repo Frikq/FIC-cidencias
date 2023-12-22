@@ -1,40 +1,42 @@
-FROM php:8.0.11-fpm-alpine
+FROM php:8.0.11-apache
 
-RUN apk --no-cache upgrade && \
-    apk --no-cache add bash git sudo openssh libxml2-dev oniguruma-dev autoconf gcc g++ make npm freetype-dev libjpeg-turbo-dev libpng-dev libzip-dev unixODBC-dev
+RUN apt-get update && \
+    apt-get install -y \
+        libzip-dev \
+        libonig-dev \
+        libxml2-dev \
+        unixODBC-dev \
+        unzip \
+        && rm -rf /var/lib/apt/lists/*
+
+# Enable necessary Apache modules
+RUN a2enmod rewrite
+
+# Install required PHP extensions
+RUN docker-php-ext-install pdo pdo_mysql mbstring zip pcntl soap
 
 # Install SQL Server PDO Driver
 RUN set -eux; \
-    apk add --no-cache --virtual .build-deps $PHPIZE_DEPS; \
-    pecl install pdo_sqlsrv; \
-    docker-php-ext-enable pdo_sqlsrv; \
-    apk del .build-deps
+    docker-php-ext-configure pdo_sqlsrv --with-pdo-sqlsrv=unixODBC,/usr; \
+    docker-php-ext-install pdo_sqlsrv
 
-# PHP: Install php extensions
-RUN pecl channel-update pecl.php.net
-RUN pecl install pcov ssh2 swoole
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install mbstring xml iconv pcntl gd zip sockets bcmath soap pdo pdo_mysql pdo_sqlsrv
-RUN docker-php-ext-enable mbstring xml gd iconv zip pcov pcntl sockets bcmath pdo pdo_mysql pdo_sqlsrv soap swoole
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN curl -sS https://getcomposer.org/installer | php -- \
-     --install-dir=/usr/local/bin --filename=composer
+WORKDIR /var/www/html
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-COPY --from=spiralscout/roadrunner:2.4.2 /usr/bin/rr /usr/bin/rr
-
-WORKDIR /app
 COPY . .
-RUN rm -rf /app/vendor
-RUN rm -rf /app/composer.lock
-RUN composer install
-RUN composer require laravel/octane spiral/roadrunner
-COPY .env.example .env
-RUN mkdir -p /app/storage/logs
-RUN php artisan cache:clear
-RUN php artisan view:clear
-RUN php artisan config:clear
-RUN php artisan octane:install --server="swoole"
-CMD php artisan octane:start --server="swoole" --host="0.0.0.0"
 
-EXPOSE 8000
+# Install dependencies
+RUN composer install
+
+# Set appropriate permissions
+RUN chown -R www-data:www-data storage bootstrap/cache
+
+# Copy Apache virtual host configuration
+COPY apache.conf /etc/apache2/sites-available/000-default.conf
+
+# Expose port 80
+EXPOSE 80
+
+CMD ["apache2-foreground"]

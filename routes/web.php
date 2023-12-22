@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 // Rutas de recursos para archivos CSS y JavaScript
 //Route::any('/mi-ruta', 'BDController@iniciar');
 
+Route::post('/', [BDController::class, 'iniciar'])->name('iniciar');
 Route::post('login', [BDController::class, 'iniciar'])->name('iniciar');
 Route::post('registro', [BDController::class, 'registrar'])->name('registrar');
 Route::post('cerrar', [BDController::class, 'cerrarSesion'])->name('cerrar');
