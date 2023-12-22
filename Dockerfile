@@ -1,9 +1,6 @@
 # Usa una imagen de PHP con Apache
 FROM php:8.0.30-apache-buster
 
-# Instala las extensiones necesarias para SQL Server
-RUN pecl install sqlsrv pdo_sqlsrv \
-    && docker-php-ext-enable sqlsrv pdo_sqlsrv
 
 # Configura el servidor Apache
 RUN a2enmod rewrite
