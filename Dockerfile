@@ -8,18 +8,14 @@ COPY ./apache-config.conf /etc/apache2/sites-available/000-default.conf
 
 # Instala Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
 # Configura el directorio de trabajo
 WORKDIR /var/www/html
 
 # Copia los archivos de la aplicación al contenedor
 COPY . .
-
-# Instala las dependencias utilizando Composer
-RUN composer install --no-scripts --no-autoloader && \
-    composer clear-cache && \
-    rm -rf /var/www/html/vendor /var/www/html/composer.lock && \
-    composer install --no-scripts
+RUN rm -rf /app/vendor
+RUN rm -rf /app/composer.lock
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 
 # Configura las variables de entorno para Laravel
