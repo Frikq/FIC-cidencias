@@ -1,13 +1,16 @@
 FROM php:8.0.11-apache
 
-RUN apt-get update && \
-    apt-get install -y \
+RUN apk --no-cache update && \
+    apk --no-cache add \
         libzip-dev \
         libonig-dev \
         libxml2-dev \
         unixODBC-dev \
         unzip \
-        && rm -rf /var/lib/apt/lists/*
+        freetype-dev \
+        libjpeg-turbo-dev \
+        libpng-dev
+
 
 # Enable necessary Apache modules
 RUN a2enmod rewrite
