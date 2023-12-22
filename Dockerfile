@@ -1,27 +1,25 @@
-FROM php:8.0.11-apache
+FROM php:8.0.11-fpm-alpine
 
 RUN apk --no-cache update && \
     apk --no-cache add \
         libzip-dev \
         libonig-dev \
         libxml2-dev \
-        unixODBC-dev \
+        unixodbc-dev \
         unzip \
         freetype-dev \
         libjpeg-turbo-dev \
         libpng-dev
 
-
-# Enable necessary Apache modules
-RUN a2enmod rewrite
-
-# Install required PHP extensions
+# Enable necessary PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql mbstring zip pcntl soap
 
 # Install SQL Server PDO Driver
 RUN set -eux; \
+    apk add --no-cache --virtual .build-deps unixodbc-dev; \
     docker-php-ext-configure pdo_sqlsrv --with-pdo-sqlsrv=unixODBC,/usr; \
-    docker-php-ext-install pdo_sqlsrv
+    docker-php-ext-install pdo_sqlsrv; \
+    apk del .build-deps
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -36,10 +34,7 @@ RUN composer install
 # Set appropriate permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# Copy Apache virtual host configuration
-COPY apache.conf /etc/apache2/sites-available/000-default.conf
+# Expose port 9000 for php-fpm
+EXPOSE 9000
 
-# Expose port 80
-EXPOSE 80
-
-CMD ["apache2-foreground"]
+CMD ["php-fpm"]
